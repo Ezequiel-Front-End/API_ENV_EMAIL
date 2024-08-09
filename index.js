@@ -1,8 +1,9 @@
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 3000;
+const port = 3000;
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
+require('dotenv').config();
 
 app.use(express.json());
 
@@ -11,37 +12,50 @@ app.use(bodyParser.json());
 
 // Configurar o Nodemailer
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: true, // Use `true` for port 465, `false` for all other ports
+    service: process.env.EMAIL_SERVICE,
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
+    secure: true, // Use `true` for port 465, `false` for all other ports 
     auth: {
-        user: "ezequielfernandes912@gmail.com",
-        pass: "cnswjsgojezdzcvy",
+        user: process.env.EMAIL_USER_ABC,
+        pass: process.env.EMAIL_PASS_ABC,
     },
 });
 
+// Rota inicial
 app.get('/', (req, res) => {
     res.send('API de envio de Email AbcTechnology');
 });
 
-app.post('/api/send-email', (req, res) => {
-    // const { to, subject, text } = req.body;
+// Rota de envio de Email
+app.post('/api/send-email', async (req, res) => {
+    const { to, subject, text, html } = req.body;
 
-    const mailOptions = {
-        from: "ezequielfernandes912@gmail.com",
-        to: "ezequielfernandes912@gmail.com",
-        subject: "Testando o sistema de envio de email",
-        text: "testando..."
-    };
+    if (!to || !subject || (!text && !html)) {
+        return res.status(400).send({ error: 'Por favor, forneça todos os campos necessários: to, subject, text ou html' });
+    }
 
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            return res.status(500).send(error.toString());
-        }
+    try {
 
-        res.status(200).send('Email enviado: ' + info.response);
-    });
+        // Configurando o Email
+        const mailOptions = {
+            from: "abctechnology895@gmail.com",
+            to: to,
+            subject: subject,
+            text: text,
+            html: html
+        };
+
+        // Enviar o e-mail
+        let info = await transporter.sendMail(mailOptions);
+
+        res.send({ message: 'E-mail enviado com sucesso', info });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ error: 'Erro ao enviar o e-mail' });
+    }
+
 });
 
 app.listen(port, () => {
