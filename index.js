@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
     res.send('API de envio de Email AbcTechnology');
 });
 
-// Rota de envio de Email
+// Rota de envio de Email..
 app.post('/api/send-email', async (req, res) => {
     const { to, subject, text, html } = req.body;
 
