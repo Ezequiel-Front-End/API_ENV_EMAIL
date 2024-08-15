@@ -38,7 +38,7 @@ const transporterContatoAbctechnology = nodemailer.createTransport({
 
 // Rota inicial
 app.get('/', (req, res) => {
-    res.send('API de Envio de Email Imperius!');
+    res.send('API de Envio de Email Imperius & Contato AbcTechnology');
 });
 
 // Rota de envio imperius
