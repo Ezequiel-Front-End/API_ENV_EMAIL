@@ -54,7 +54,7 @@ app.post('/api/send-email-imperius', async (req, res) => {
 
         // Configurando o Email
         const mailOptions = {
-            from: "",
+            from: "maria.helena@abctechnology.com.br",
             to: to,
             subject: subject,
             text: text,
@@ -86,7 +86,7 @@ app.post('/api/send-email-contato-abctechnology', async (req, res) => {
 
         // Configurando o Email
         const mailOptions = {
-            from: "",
+            from: "contato@abctechnology.com.br",
             to: to,
             subject: subject,
             text: text,
