@@ -3,7 +3,11 @@ const app = express();
 const port = 3000;
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 require('dotenv').config();
+
+// Permitir todos os domínios (não recomendado em produção)
+app.use(cors());
 
 app.use(express.json());
 
